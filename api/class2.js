@@ -1,33 +1,44 @@
-const express = require('express');
+const express = require("express");
+
+const filename = "./database/database.sqlite";
+const knex = require("knex")({
+  client: "sqlite3",
+  connection: {
+    filename
+  }
+});
 
 const router = express.Router();
 
-
-router.get('/customers', function(req, res) {
-  // TODO: fix code here
-  res.status(200).json({
-    customers: [{
-      id: 2,
-      title: 'Mr',
-      firstname: 'Laurie',
-      surname: 'Ainley',
-      email: 'laurie@ainley.com'
-    }
-  ]});
+router.get("/customers", function(req, res) {
+  const sqlStatement = "select * from customers";
+  knex.raw(sqlStatement).then(function(data) {
+    res.json(data);
+  });
 });
 
+router.get("/customers/:id", function(req, res) {
+  const sqlStatement = `select * from customers where id = ${req.params.id}`;
+  knex.raw(sqlStatement).then(function(data) {
+    res.json(data);
+  });
+});
 
-router.get('/customers/:id', function(req, res) {
+router.get("/customers/:surname", function(req, res) {
   // TODO: add code here
 });
 
+router.post("/customers", function(req, res) {
+  const sqlStatement = `INSERT INTO customers(title, firstname, surname, email) VALUES("${
+    req.body.title
+  }","${req.body.firstname}","${req.body.surname}","${req.body.email}")`;
 
-router.get('/customers/:surname', function(req, res) {
-  // TODO: add code here
+  knex.raw(sqlStatement).then(function(data) {
+    res.json(data);
+  });
 });
 
-
-router.post('/customers/', function(req, res) {
+router.put("/customers/:id", function(req, res) {
   // EXPECTED JSON Object:
   // {
   //   title: 'Mr',
@@ -35,43 +46,23 @@ router.post('/customers/', function(req, res) {
   //   surname: 'Ainley',
   //   email: 'laurie@ainley.com'
   // }
-
   // TODO: add code here
 });
-
-
-router.put('/customers/:id', function(req, res) {
-  // EXPECTED JSON Object:
-  // {
-  //   title: 'Mr',
-  //   firstname: 'Laurie',
-  //   surname: 'Ainley',
-  //   email: 'laurie@ainley.com'
-  // }
-
-  // TODO: add code here
-});
-
 
 // get '/reservations'
 // TODO: add code here
 
-
 // get '/reservations/:id'
 // TODO: add code here
-
 
 // delete '/reservations/:id'
 // TODO: add code here
 
-
 // get '/reservations/starting-on/:startDate'
 // TODO: add code here
 
-
 // get '/reservations/active-on/:date'
 // TODO: add code here
-
 
 // post '/reservations'
 // EXPECTED JSON Object:
@@ -84,10 +75,8 @@ router.put('/customers/:id', function(req, res) {
 // }
 // TODO: add code here
 
-
 // get `/detailed-invoices'
 // TODO: add code here
-
 
 // get `/reservations/details-between/:from_day/:to_day`
 // TODO: add code here

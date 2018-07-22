@@ -2,10 +2,10 @@ DROP TABLE IF EXISTS customers;
 
 CREATE TABLE customers (
     id INTEGER       PRIMARY KEY AUTOINCREMENT,
-    title     VARCHAR,
-    firstname VARCHAR,
-    surname   VARCHAR,
-    email     VARCHAR
+    title     VARCHAR (10),
+    firstname VARCHAR(50),
+    surname   VARCHAR (50),
+    email     VARCHAR(255)
 );
 
 DROP TABLE IF EXISTS invoices;
